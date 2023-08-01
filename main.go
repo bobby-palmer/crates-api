@@ -1,14 +1,28 @@
 package main
 
-import(
-  "io"
-  "net/http"
+import (
+	//"encoding/json"
+	//"io"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func main() {
-  handler := func(w http.ResponseWriter, req *http.Request) {
-    io.WriteString(w, "testing!")
+type crate struct {
+  Name string `json:"name"`
+}
+
+
+func getName(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Content-type", "application/json")
+  test := crate {
+    Name: "test",
   }
-  http.HandleFunc("/", handler)
-  http.ListenAndServe(":8000", nil)
+  json.NewEncoder(w).Encode(test)
+}
+func main() {
+  router := mux.NewRouter()
+  router.HandleFunc("/{crate_name}", getName).Methods("GET")
+  http.ListenAndServe(":8000", router)
 }
