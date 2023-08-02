@@ -14,18 +14,21 @@ type crate struct {
   Name string `json:"name"`
 }
 
-func getName(w http.ResponseWriter, r *http.Request) {
-  vars := mux.Vars(r)
-  name := vars["crate_name"]
-  info := crate {
+func getInfo(name string) crate {
+  return crate {
     Name: name,
   }
+}
+
+func getName(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  name := vars["name"]
   w.Header().Set("Content-type", "application/json")
-  json.NewEncoder(w).Encode(info)
+  json.NewEncoder(w).Encode(getInfo(name))
 }
 
 func main() {
   router := mux.NewRouter()
-  router.HandleFunc("/crate/{crate_name}", getName).Methods("GET")
+  router.HandleFunc("/crate/{name}", getName).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
 }
