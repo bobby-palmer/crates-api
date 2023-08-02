@@ -5,6 +5,7 @@ import (
 	//"io"
 	"encoding/json"
 	"net/http"
+  "log"
 
 	"github.com/gorilla/mux"
 )
@@ -13,17 +14,15 @@ type crate struct {
   Name string `json:"name"`
 }
 
-
 func getName(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
+  name := vars["crate_name"]
   w.Header().Set("Content-type", "application/json")
-  test := crate {
-    Name: vars["crate_name"],
-  }
-  json.NewEncoder(w).Encode(test)
+  json.NewEncoder(w).Encode(name)
 }
+
 func main() {
   router := mux.NewRouter()
   router.HandleFunc("/{crate_name}", getName).Methods("GET")
-  http.ListenAndServe(":8000", router)
+  log.Fatal(http.ListenAndServe(":8080", router))
 }
