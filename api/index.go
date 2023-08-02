@@ -9,12 +9,6 @@ import (
 	. "github.com/tbxark/g4vercel"
 )
 
-type endpoint struct {
-  Version int `json:"schemaVersion"`
-  Label string `json:"label"`
-  Message string `json:"message"`
-  Color string `json:"color"`
-}
 
 func extract(key string, body string) string {
   prefix := `"` + key + `":"?`
@@ -26,7 +20,7 @@ func extract(key string, body string) string {
   return string(matches[1])
 }
 
-func getInfo(name string) endpoint {
+func getInfo(name string) H {
   url := "https://crates.io/api/v1/crates/" + name
   res, err := http.Get(url)
   if err != nil {
@@ -37,11 +31,11 @@ func getInfo(name string) endpoint {
     log.Fatal(err)
   }
   downloads := extract("downloads", string(body))
-  return endpoint {
-    Version: 1,
-    Label: "Downloads",
-    Message: downloads,
-    Color: "orange",
+  return H {
+    "schemaVersion": 1,
+    "label": "Downloads",
+    "message": downloads,
+    "color": "orange",
   }
 }
 
