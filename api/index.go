@@ -55,6 +55,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 func Main() {
   router := mux.NewRouter()
-  router.HandleFunc("/crate/{name}", Handler).Methods("GET")
+  router.HandleFunc("/{name}", Handler).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
 }
