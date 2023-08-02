@@ -1,22 +1,34 @@
 package main
 
 import (
-	//"encoding/json"
-	//"io"
 	"encoding/json"
+	"log"
 	"net/http"
-  "log"
 
 	"github.com/gorilla/mux"
 )
 
 type crate struct {
   Name string `json:"name"`
+  Downloads string `json:"downloads"`
+}
+
+func extract(key string, body *http.Response) string {
+  return "test"
 }
 
 func getInfo(name string) crate {
+  url := "https://crates.io/api/v1/crates/" + name
+  res, err := http.Get(url)
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Print(res)
+  downloads := extract("downloads", res)
+
   return crate {
     Name: name,
+    Downloads: downloads,
   }
 }
 
