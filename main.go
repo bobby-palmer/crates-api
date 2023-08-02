@@ -10,9 +10,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type crate struct {
-  Name string `json:"name"`
-  Downloads string `json:"downloads"`
+type endpoint struct {
+  Version int `json:"schemaVersion"`
+  Label string `json:"label"`
+  Message string `json:"message"`
+  Color string `json:"color"`
 }
 
 func extract(key string, body string) string {
@@ -25,7 +27,7 @@ func extract(key string, body string) string {
   return string(matches[1])
 }
 
-func getInfo(name string) crate {
+func getInfo(name string) endpoint {
   url := "https://crates.io/api/v1/crates/" + name
   res, err := http.Get(url)
   if err != nil {
@@ -36,9 +38,11 @@ func getInfo(name string) crate {
     log.Fatal(err)
   }
   downloads := extract("downloads", string(body))
-  return crate {
-    Name: name,
-    Downloads: downloads,
+  return endpoint {
+    Version: 1,
+    Label: "Downloads",
+    Message: downloads,
+    Color: "orange",
   }
 }
 
