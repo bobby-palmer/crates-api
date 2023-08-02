@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+  "io/ioutil"
+  "regexp"
 
 	"github.com/gorilla/mux"
 )
@@ -13,8 +15,14 @@ type crate struct {
   Downloads string `json:"downloads"`
 }
 
-func extract(key string, body *http.Response) string {
-  return "test"
+func extract(key string, body string) string {
+  prefix := `"` + key + `":"?`
+  pattern := regexp.MustCompile(prefix + `(\w+)`)
+  matches := pattern.FindSubmatch([]byte(body))
+  if matches == nil {
+    return ""
+  }
+  return string(matches[1])
 }
 
 func getInfo(name string) crate {
@@ -23,9 +31,11 @@ func getInfo(name string) crate {
   if err != nil {
     log.Fatal(err)
   }
-  log.Print(res)
-  downloads := extract("downloads", res)
-
+  body, err := ioutil.ReadAll(res.Body)
+  if err != nil {
+    log.Fatal(err)
+  }
+  downloads := extract("downloads", string(body))
   return crate {
     Name: name,
     Downloads: downloads,
