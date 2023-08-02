@@ -15,9 +15,10 @@ type crate struct {
 
 
 func getName(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
   w.Header().Set("Content-type", "application/json")
   test := crate {
-    Name: "test",
+    Name: vars["crate_name"],
   }
   json.NewEncoder(w).Encode(test)
 }
