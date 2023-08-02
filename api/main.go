@@ -46,7 +46,7 @@ func getInfo(name string) endpoint {
   }
 }
 
-func getName(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   name := vars["name"]
   w.Header().Set("Content-type", "application/json")
@@ -55,6 +55,6 @@ func getName(w http.ResponseWriter, r *http.Request) {
 
 func Main() {
   router := mux.NewRouter()
-  router.HandleFunc("/crate/{name}", getName).Methods("GET")
+  router.HandleFunc("/crate/{name}", Handler).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
 }
