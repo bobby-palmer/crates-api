@@ -53,7 +53,7 @@ func getName(w http.ResponseWriter, r *http.Request) {
   json.NewEncoder(w).Encode(getInfo(name))
 }
 
-func main() {
+func Main() {
   router := mux.NewRouter()
   router.HandleFunc("/crate/{name}", getName).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
