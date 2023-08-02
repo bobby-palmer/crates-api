@@ -43,7 +43,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
   server := New()
 
   server.GET("/downloads/:name", func(context *Context) {
-    context.JSON(400, getInfo(context.Param("name")))
+    context.JSON(200, getInfo(context.Param("name")))
   })
 
   server.GET("/", func(context *Context) {
