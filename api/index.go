@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"context"
-	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
