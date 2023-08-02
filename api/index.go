@@ -1,13 +1,14 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
-  "io/ioutil"
-  "regexp"
+	"regexp"
 
-  . "github.com/tbxark/g4vercel"
+	. "github.com/tbxark/g4vercel"
 )
 
 type endpoint struct {
@@ -51,6 +52,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
   server.GET("/downloads/:name", func(context *Context) {
     context.JSON(400, getInfo(context.Param("name")))
+  })
+
+  server.GET("/", func(context *Context) {
+    context.JSON(400, H {
+      "message":"SUCCESS!",
+    })
   })
 
   server.Handle(w, r)
