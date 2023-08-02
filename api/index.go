@@ -7,7 +7,7 @@ import (
   "io/ioutil"
   "regexp"
 
-	"github.com/gorilla/mux"
+  . "github.com/tbxark/g4vercel"
 )
 
 type endpoint struct {
@@ -47,14 +47,11 @@ func getInfo(name string) endpoint {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-  vars := mux.Vars(r)
-  name := vars["name"]
-  w.Header().Set("Content-type", "application/json")
-  json.NewEncoder(w).Encode(getInfo(name))
-}
+  server := New()
 
-func Main() {
-  router := mux.NewRouter()
-  router.HandleFunc("/{name}", Handler).Methods("GET")
-  log.Fatal(http.ListenAndServe(":8080", router))
+  server.GET("/downloads/:name", func(context *Context) {
+    context.JSON(400, getInfo(context.Param("name")))
+  })
+
+  server.Handle(w, r)
 }
