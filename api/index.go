@@ -7,6 +7,7 @@ import (
 	"regexp"
 
 	. "github.com/tbxark/g4vercel"
+  "github.com/floscodes/golang-thousands"
 )
 
 
@@ -30,7 +31,7 @@ func getInfo(name string) H {
   if err != nil {
     log.Fatal(err)
   }
-  downloads := extract("downloads", string(body))
+  downloads, _ := thousands.Separate(extract("downloads", string(body)), "en")
   return H {
     "schemaVersion": 1,
     "label": "Downloads",
