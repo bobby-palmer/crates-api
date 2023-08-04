@@ -20,7 +20,7 @@ func extract(key string, body string) string {
     return ""
   }
   p := message.NewPrinter(language.English)
-  return p.Sprintf("%f", matches[1])
+  return p.Sprintf("%f", string(matches[1]))
 }
 
 func getInfo(name string) H {
