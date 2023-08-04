@@ -1,12 +1,14 @@
 package handler
 
 import (
-	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
 
-func TestExtract(t *testing.T) {
-  
+func TestSeparate(t *testing.T) {
+  result := separate("1000000")
+  expected := "1,000,000"
+  if result != expected {
+    t.Errorf("got %q, wanted %q", result, expected)
+  }
 }

@@ -7,10 +7,15 @@ import (
 	"regexp"
 
 	. "github.com/tbxark/g4vercel"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 )
 
+func separate(num string) string {
+  length := len(num)
+  if length <= 3 {
+    return num
+  }
+  return separate(num[0:length - 3]) + "," + num[length - 3:]
+}
 
 func extract(key string, body string) string {
   prefix := `"` + key + `":"?`
@@ -19,8 +24,7 @@ func extract(key string, body string) string {
   if matches == nil {
     return ""
   }
-  p := message.NewPrinter(language.English)
-  return p.Sprintf("%f", string(matches[1]))
+  return separate(string(matches[1]))
 }
 
 func getInfo(name string) H {
