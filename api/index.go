@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+  "regexp"
 
 	. "github.com/tbxark/g4vercel"
 )
@@ -16,6 +17,16 @@ func separate(num string) string {
   return separate(num[0:length - 3]) + "," + num[length - 3:]
 }
 
+
+func extract(key string, body string) string {
+  prefix := `"` + key + `":"?`
+  pattern := regexp.MustCompile(prefix + `(\w+)`)
+  matches := pattern.FindSubmatch([]byte(body))
+  if matches == nil {
+    return ""
+  }
+  return separate(string(matches[1]))
+}
 
 func getInfo(name string) H {
   url := "https://crates.io/api/v1/crates/" + name
