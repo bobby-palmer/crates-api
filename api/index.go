@@ -47,14 +47,6 @@ func getInfo(name string) H {
   }
 }
 
-func serveBadge(name string) *http.Response {
-  url := "https://img.shields.io/endpoint?url=https%3A%2F%2Fcrates-api.vercel.app%2Fdownloads%2F" + name
-  res, err := http.Get(url)
-  if err != nil {
-    log.Fatal(err)
-  }
-  return res
-}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
   server := New()
@@ -69,9 +61,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     })
   })
 
-  server.GET("/crates/badge/:name", func(context *Context) {
-    context.JSON(200, serveBadge(context.Param("name")))
-  })
 
   server.Handle(w, r)
 }
